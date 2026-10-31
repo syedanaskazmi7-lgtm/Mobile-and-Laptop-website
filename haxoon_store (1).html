@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haxoon | Next-Gen Laptops & Mobile Experience</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        haxoon: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#06b6d4',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0f172a',
+                            950: '#070c14',
+                        },
+                        accent: {
+                            cyan: '#00f2fe',
+                            purple: '#4facfe',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(7, 12, 20, 0.85);
+            backdrop-filter: blur(16px);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.06);
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-haxoon-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-haxoon-500 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white text-xs sm:text-sm py-2 px-4 text-center font-semibold tracking-wide">
+        <span>⚡ Welcome to <strong class="font-extrabold uppercase">Haxoon</strong> • Express Delivery on Laptops & Smart Devices | Code: <strong class="bg-white/20 px-2 py-0.5 rounded text-white">HAXOON2026</strong></span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="filterCategory('all')">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-wider text-white">HAX<span class="text-cyan-400">OON</span></span>
+                        <span class="block text-[10px] text-slate-400 font-semibold uppercase tracking-widest -mt-1">Next-Gen Tech</span>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex flex-1 max-w-lg mx-8 relative">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search Haxoon laptops, smartphones, specs..." 
+                        class="w-full bg-slate-900/90 text-slate-200 placeholder-slate-400 border border-slate-800 rounded-2xl py-2.5 pl-11 pr-10 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                    <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-3 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-circle-xmark text-sm"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <button onclick="toggleWishlistModal()" class="relative p-2.5 text-slate-300 hover:text-cyan-400 bg-slate-900 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span id="wishlistBadge" class="absolute -top-1 -right-1 bg-cyan-500 text-slate-950 text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 hidden">0</span>
+                    </button>
+
+                    <button id="cartBtn" onclick="toggleCart()" class="relative p-2.5 text-slate-300 hover:text-cyan-400 bg-slate-900 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cartBadge" class="absolute -top-1 -right-1 bg-cyan-400 text-slate-950 text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 hidden">0</span>
+                    </button>
+
+                    <button class="hidden sm:flex items-center space-x-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl transition shadow-lg shadow-cyan-500/25 text-sm">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Sign In</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="md:hidden pb-4">
+                <div class="relative">
+                    <input type="text" id="mobileSearchInput" oninput="handleSearch(true)" placeholder="Search devices on Haxoon..." 
+                        class="w-full bg-slate-900 text-slate-200 placeholder-slate-400 border border-slate-800 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-cyan-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Showcase Banner -->
+        <section class="relative overflow-hidden bg-gradient-to-b from-haxoon-950 via-slate-900 to-haxoon-950 py-12 lg:py-20 border-b border-slate-800/60">
+            <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:24px_24px]"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center space-x-2 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full shadow-sm">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                            <span>HAXOON FLAGSHIP SERIES 2026</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+                            Power Transcended. <br>
+                            <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-400 bg-clip-text text-transparent">Laptops & Mobiles.</span>
+                        </h1>
+                        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                            Discover the official **Haxoon** collection. High-performance computing, OLED displays, neural AI processors, and flagship mobile technology engineered for perfection.
+                        </p>
+                        <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-2">
+                            <a href="#catalog" onclick="filterCategory('laptop')" class="inline-flex justify-center items-center px-7 py-3.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold rounded-2xl shadow-xl shadow-cyan-500/20 transition duration-200 glow-effect">
+                                <i class="fa-solid fa-laptop mr-2"></i> Shop Laptops
+                            </a>
+                            <a href="#catalog" onclick="filterCategory('mobile')" class="inline-flex justify-center items-center px-7 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold rounded-2xl transition">
+                                <i class="fa-solid fa-mobile-screen-button mr-2"></i> Explore Mobiles
+                            </a>
+                        </div>
+
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0 text-left">
+                            <div>
+                                <div class="text-cyan-400 font-extrabold text-lg">100%</div>
+                                <div class="text-slate-400 text-xs">Authentic Tech</div>
+                            </div>
+                            <div>
+                                <div class="text-cyan-400 font-extrabold text-lg">2-Year</div>
+                                <div class="text-slate-400 text-xs">Haxoon Warranty</div>
+                            </div>
+                            <div>
+                                <div class="text-cyan-400 font-extrabold text-lg">24/7</div>
+                                <div class="text-slate-400 text-xs">Expert Support</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5">
+                        <div class="relative">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-3xl blur-lg opacity-40"></div>
+                            <div class="relative glass-card rounded-3xl p-6 sm:p-7 flex flex-col items-center border border-slate-700/60">
+                                <span class="absolute top-4 right-4 bg-cyan-500/20 border border-cyan-400/30 text-cyan-300 text-xs font-bold px-3 py-1 rounded-full">
+                                    Haxoon Editor's Pick
+                                </span>
+                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" alt="Haxoon Ultra Studio" class="w-full h-56 object-cover rounded-2xl mb-5 shadow-2xl">
+                                <div class="w-full text-left">
+                                    <h3 class="text-xl font-extrabold text-white">Haxoon Blade Pro M3</h3>
+                                    <p class="text-slate-400 text-xs mt-1">32GB DDR5 • 1TB NVMe • 16" 165Hz Mini-LED</p>
+                                    <div class="mt-4 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-xs text-slate-500 block">Offer Price</span>
+                                            <span class="text-2xl font-black text-cyan-400">$1,999</span>
+                                        </div>
+                                        <button onclick="addToCart(1)" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-sm px-5 py-2.5 rounded-xl transition shadow-lg shadow-cyan-500/20">
+                                            Quick Buy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Catalog Section -->
+        <section id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-10 gap-6">
+                <div>
+                    <h2 class="text-3xl font-black text-white tracking-tight">Haxoon Store Catalog</h2>
+                    <p class="text-slate-400 text-sm mt-1">Filter by device type or sort to find your ideal hardware.</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
+                        <button onclick="filterCategory('all')" id="btn-all" class="category-btn active px-4 py-2 rounded-xl text-xs font-bold transition bg-cyan-500 text-slate-950 shadow-md">All</button>
+                        <button onclick="filterCategory('laptop')" id="btn-laptop" class="category-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">Laptops</button>
+                        <button onclick="filterCategory('mobile')" id="btn-mobile" class="category-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">Mobiles</button>
+                        <button onclick="filterCategory('accessory')" id="btn-accessory" class="category-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">Accessories</button>
+                    </div>
+
+                    <select id="sortSelect" onchange="handleSort()" class="bg-slate-900 text-slate-300 border border-slate-800 rounded-2xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-cyan-500">
+                        <option value="featured">Sort by: Featured</option>
+                        <option value="low-high">Price: Low to High</option>
+                        <option value="high-low">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            
+            <div id="noResults" class="hidden text-center py-20 bg-slate-900/40 rounded-3xl border border-slate-800/80">
+                <i class="fa-solid fa-laptop-code text-6xl text-slate-700 mb-4"></i>
+                <h3 class="text-xl font-bold text-slate-200">No products matching your search</h3>
+                <p class="text-slate-400 text-sm mt-1 max-w-md mx-auto">Try searching for keywords like "Laptop", "OLED", "Snapdragon", or clear your filter.</p>
+                <button onclick="filterCategory('all')" class="mt-5 px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold text-xs rounded-xl transition">
+                    Reset Catalog
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 border border-cyan-500/50 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <div class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <i class="fa-solid fa-check text-sm"></i>
+        </div>
+        <span id="toastMessage" class="text-sm font-bold">Item updated!</span>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-full flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent" class="p-6 sm:p-8"></div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlistModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-cyan-400"></i> Your Wishlist
+                </h3>
+                <button onclick="toggleWishlistModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="wishlistContainer" class="py-4 space-y-3 max-h-80 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-slate-900 border-l border-slate-800 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-bag-shopping text-cyan-400 text-xl"></i>
+                <h3 class="text-lg font-black text-white">Your Haxoon Cart</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div class="bg-slate-950 p-4 border-b border-slate-800/80">
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span id="shippingText" class="text-slate-300">Add products to get Free Shipping</span>
+                <span id="shippingPercent" class="text-cyan-400">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div id="shippingBar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-5 space-y-4"></div>
+
+        <div class="p-5 border-t border-slate-800 bg-slate-950">
+            <div class="space-y-2 mb-4 text-xs">
+                <div class="flex justify-between text-slate-400">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal" class="font-bold text-slate-200">$0.00</span>
+                </div>
+                <div class="flex justify-between text-slate-400">
+                    <span>Shipping</span>
+                    <span id="cartShippingCost" class="text-cyan-400 font-bold">Calculated at checkout</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-base font-black text-white">
+                    <span>Total Amount</span>
+                    <span id="cartTotal" class="text-2xl font-black text-cyan-400">$0.00</span>
+                </div>
+            </div>
+            <button onclick="checkout()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black py-3.5 rounded-xl transition shadow-lg shadow-cyan-500/20 text-sm">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-xl bg-cyan-500 flex items-center justify-center text-slate-950 font-black">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <span class="text-xl font-black tracking-wider text-white">HAX<span class="text-cyan-400">OON</span></span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Haxoon is a premium online tech destination for next-generation laptops, flagship smartphones, and high-performance mobile gear.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Store Categories</h4>
+                    <ul class="space-y-2.5 text-slate-400 text-xs font-medium">
+                        <li><a href="#catalog" onclick="filterCategory('laptop')" class="hover:text-cyan-400 transition">Haxoon Workstation Laptops</a></li>
+                        <li><a href="#catalog" onclick="filterCategory('mobile')" class="hover:text-cyan-400 transition">Flagship AI Smartphones</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Customer Support</h4>
+                    <ul class="space-y-2.5 text-slate-400 text-xs font-medium">
+                        <li><a href="#" class="hover:text-cyan-400 transition">Track Your Order</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition">Haxoon Care Warranty</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm mb-4 uppercase tracking-wider">Haxoon Insider</h4>
+                    <p class="text-slate-400 text-xs mb-3">Subscribe for tech alerts & discount codes.</p>
+                    <form onsubmit="event.preventDefault(); showToast('Subscribed to Haxoon Insider!');" class="flex flex-col space-y-2">
+                        <input type="email" required placeholder="Enter your email" class="bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs py-2.5 rounded-xl transition">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-slate-500 text-xs gap-4">
+                <div>&copy; 2026 <strong>Haxoon Technologies Ltd.</strong> All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Floating Chatbot Widget -->
+    <div class="fixed bottom-6 left-6 z-50">
+        <button onclick="toggleAiChat()" id="aiToggleBtn" class="w-14 h-14 bg-gradient-to-tr from-cyan-500 to-blue-600 text-slate-950 rounded-full flex items-center justify-center shadow-xl shadow-cyan-500/30 hover:scale-105 transition transform">
+            <i class="fa-solid fa-robot text-2xl text-white"></i>
+        </button>
+
+        <div id="aiChatWindow" class="hidden absolute bottom-20 left-0 w-80 sm:w-96 bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[480px]">
+            <div class="bg-slate-950 p-4 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
+                    <h3 class="text-sm font-black text-white">Haxoon Open AI Assistant</h3>
+                </div>
+                <button onclick="toggleAiChat()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="aiMessages" class="flex-grow p-4 overflow-y-auto space-y-3 text-xs">
+                <div class="bg-slate-800/80 text-slate-200 p-3 rounded-2xl max-w-[85%]">
+                    Hello! Main Haxoon ka Open-Source AI Assistant hoon. Aap laptops, smartphones aur unki specs ke baare mein pooch sakte hain!
+                </div>
+            </div>
+
+            <div class="p-3 bg-slate-950 border-t border-slate-800 flex items-center space-x-2">
+                <input type="text" id="aiUserInput" onkeydown="if(event.key==='Enter') sendAiMessage()" placeholder="Ask about laptops or mobiles..." class="flex-grow bg-slate-900 text-slate-200 placeholder-slate-500 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-cyan-500">
+                <button onclick="sendAiMessage()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-3.5 py-2 rounded-xl font-bold text-xs transition">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Haxoon Catalog Data
+        const products = [
+            { id: 1, name: "Haxoon Blade Pro M3", category: "laptop", price: 1999, rating: 4.9, badge: "Flagship", image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80", specs: "32GB RAM | 1TB SSD | 16\" Mini-LED 165Hz", description: "The ultimate laptop engineered for heavy multitasking, rendering, and professional software." },
+            { id: 2, name: "Haxoon Pulse 15 Ultra", category: "mobile", price: 1199, rating: 4.8, badge: "Best Seller", image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80", specs: "512GB | 200MP Quad Camera | Snapdragon 8", description: "Unmatched smartphone performance with liquid cooling, AI photo processing, and 120W supercharging." },
+            { id: 3, name: "Haxoon AirBook Slim 14", category: "laptop", price: 949, rating: 4.7, badge: "Ultralight", image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=600&q=80", specs: "16GB RAM | 512GB SSD | 0.99 kg Titanium", description: "Sleek featherlight laptop designed for professionals and modern remote workflows." },
+            { id: 4, name: "Haxoon Fold Z Pro", category: "mobile", price: 1399, rating: 4.9, badge: "Futuristic", image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80", specs: "256GB | Dual Screen AMOLED | Flex Hinge", description: "Revolutionary foldable smartphone experience with tablet-grade screen size in a compact body." },
+            { id: 5, name: "Haxoon Sonic Studio Buds", category: "accessory", price: 189, rating: 4.6, badge: "Popular", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80", specs: "Active Noise Cancellation | 38h Battery", description: "High-fidelity studio audio with lossless wireless connectivity and ergonomic memory foam fit." },
+            { id: 6, name: "Haxoon Vortex Titan X", category: "laptop", price: 2499, rating: 5.0, badge: "Extreme Power", image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=600&q=80", specs: "64GB RAM | RTX 4090 GPU | 240Hz QHD+", description: "Extreme gaming performance and 3D rendering machine with vapor chamber cooling system." },
+            { id: 7, name: "Haxoon Pixelate Phone 9", category: "mobile", price: 799, rating: 4.6, badge: "Top Value", image: "https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=600&q=80", specs: "256GB | Neural AI Chip | All-Day Battery", description: "Smart phone built for pure operational fluidness, clean software, and crystal clear night camera." },
+            { id: 8, name: "Haxoon TurboDock 12-in-1", category: "accessory", price: 119, rating: 4.8, badge: "Essential", image: "https://images.unsplash.com/photo-1544652478-6653e09f18a2?auto=format&fit=crop&w=600&q=80", specs: "Dual 4K 60Hz HDMI | 100W PD charging | 10Gbps USB", description: "Professional grade laptop expansion dock with multi-monitor support and fast data transfer." }
+        ];
+
+        let currentCategory = 'all';
+        let cart = [];
+        let wishlist = [];
+
+        window.onload = () => { renderProducts(); };
+
+        function renderProducts(query = "") {
+            const grid = document.getElementById("productsGrid");
+            const noResults = document.getElementById("noResults");
+            grid.innerHTML = "";
+
+            let filtered = products.filter(p => {
+                const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
+                const matchesSearch = p.name.toLowerCase().includes(query.toLowerCase()) || p.specs.toLowerCase().includes(query.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            const sortVal = document.getElementById("sortSelect").value;
+            if (sortVal === "low-high") filtered.sort((a,b) => a.price - b.price);
+            else if (sortVal === "high-low") filtered.sort((a,b) => b.price - a.price);
+            else if (sortVal === "rating") filtered.sort((a,b) => b.rating - a.rating);
+
+            if (filtered.length === 0) {
+                noResults.classList.remove("hidden");
+            } else {
+                noResults.classList.add("hidden");
+                filtered.forEach(product => grid.appendChild(createProductCard(product)));
+            }
+        }
+
+        function createProductCard(product) {
+            const isWishlisted = wishlist.includes(product.id);
+            const card = document.createElement("div");
+            card.className = "product-card bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between transition duration-300 hover:border-cyan-500/50";
+            card.innerHTML = `
+                <div>
+                    <div class="relative overflow-hidden bg-slate-950 h-52">
+                        <img src="${product.image}" alt="${product.name}" class="product-img w-full h-full object-cover transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-cyan-500/90 text-slate-950 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-lg backdrop-blur-md">${product.badge}</span>
+                        <button onclick="toggleWishlist(${product.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-900/80 backdrop-blur-sm text-${isWishlisted ? 'cyan-400' : 'slate-400'} hover:text-cyan-400 flex items-center justify-center transition">
+                            <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart text-sm"></i>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] font-black uppercase tracking-wider text-cyan-400">${product.category}</span>
+                            <span class="text-xs text-amber-400 font-bold"><i class="fa-solid fa-star text-[10px]"></i> ${product.rating}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white line-clamp-1">${product.name}</h3>
+                        <p class="text-slate-400 text-xs mt-1.5 line-clamp-2">${product.specs}</p>
+                    </div>
+                </div>
+                <div class="p-5 pt-0 flex items-center justify-between border-t border-slate-800/60 mt-3">
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-semibold block">Haxoon Price</span>
+                        <span class="text-xl font-black text-white">$${product.price}</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="openModal(${product.id})" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition">
+                            <i class="fa-regular fa-eye text-sm"></i>
+                        </button>
+                        <button onclick="addToCart(${product.id})" class="p-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition shadow-md shadow-cyan-500/20">
+                            <i class="fa-solid fa-cart-plus text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition");
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) activeBtn.className = "category-btn active px-4 py-2 rounded-xl text-xs font-bold transition bg-cyan-500 text-slate-950 shadow-md";
+            renderProducts(document.getElementById("searchInput").value);
+        }
+
+        function handleSort() { renderProducts(document.getElementById("searchInput").value); }
+        function handleSearch(isMobile = false) {
+            const inputId = isMobile ? "mobileSearchInput" : "searchInput";
+            renderProducts(document.getElementById(inputId).value);
+        }
+        function clearSearch() {
+            document.getElementById("searchInput").value = "";
+            renderProducts();
+        }
+
+        function toggleWishlist(id) {
+            const idx = wishlist.indexOf(id);
+            if (idx > -1) wishlist.splice(idx, 1);
+            else wishlist.push(id);
+            updateWishlistUI();
+            renderProducts(document.getElementById("searchInput").value);
+        }
+
+        function updateWishlistUI() {
+            const badge = document.getElementById("wishlistBadge");
+            const container = document.getElementById("wishlistContainer");
+            if (wishlist.length > 0) {
+                badge.innerText = wishlist.length;
+                badge.classList.remove("hidden");
+            } else { badge.classList.add("hidden"); }
+
+            if (wishlist.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 text-xs text-center py-6">Wishlist is empty.</p>`;
+                return;
+            }
+
+            container.innerHTML = products.filter(p => wishlist.includes(p.id)).map(item => `
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div class="flex items-center space-x-3">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg">
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${item.name}</h4>
+                            <span class="text-cyan-400 text-xs font-bold">$${item.price}</span>
+                        </div>
+                    </div>
+                    <button onclick="addToCart(${item.id})" class="px-3 py-1.5 bg-cyan-500 text-slate-950 font-bold text-xs rounded-lg">Add to Cart</button>
+                </div>
+            `).join('');
+        }
+
+        function toggleWishlistModal() { document.getElementById("wishlistModal").classList.toggle("hidden"); }
+        function toggleCart() { document.getElementById("cartDrawer").classList.toggle("translate-x-full"); }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(i => i.id === productId);
+            if (existing) existing.quantity += 1;
+            else cart.push({ ...product, quantity: 1 });
+            updateCartUI();
+            showToast(`${product.name} added to cart!`);
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById("cartItemsContainer");
+            const badge = document.getElementById("cartBadge");
+            const totalCount = cart.reduce((acc, i) => acc + i.quantity, 0);
+            const totalPrice = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove("hidden");
+            } else { badge.classList.add("hidden"); }
+
+            document.getElementById("cartSubtotal").innerText = `$${totalPrice.toLocaleString()}`;
+            document.getElementById("cartTotal").innerText = `$${totalPrice.toLocaleString()}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center py-16 text-slate-500 text-sm">Cart is empty.</p>`;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center space-x-3 bg-slate-950 p-3 rounded-2xl border border-slate-800">
+                    <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-cover rounded-xl">
+                    <div class="flex-grow">
+                        <h4 class="text-xs font-bold text-white line-clamp-1">${item.name}</h4>
+                        <div class="text-cyan-400 text-xs font-extrabold mt-0.5">$${item.price}</div>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="w-5 h-5 bg-slate-800 rounded flex items-center justify-center text-slate-300 text-xs font-bold">-</button>
+                            <span class="text-xs text-white font-bold">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="w-5 h-5 bg-slate-800 rounded flex items-center justify-center text-slate-300 text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const product = products.find(p => p.id === id);
+            document.getElementById("modalContent").innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <img src="${product.image}" class="w-full h-60 object-cover rounded-2xl border border-slate-800">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-black text-white">${product.name}</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">${product.description}</p>
+                        <div class="text-2xl font-black text-white">$${product.price}</div>
+                        <button onclick="addToCart(${product.id}); closeModal();" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black px-6 py-2.5 rounded-xl transition text-xs">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById("productModal").classList.remove("hidden");
+        }
+
+        function closeModal() { document.getElementById("productModal").classList.add("hidden"); }
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toastMessage").innerText = msg;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            setTimeout(() => toast.classList.add("translate-y-20", "opacity-0"), 3000);
+        }
+
+        function checkout() {
+            if (cart.length === 0) return showToast("Cart is empty!");
+            alert("Order placed successfully!");
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // ========================================================
+        // --- GROQ / OPEN-SOURCE OPENAI STANDARD AI BOT LOGIC ---
+        // ========================================================
+        const OPENSOURCE_API_URL = "https://api.groq.com/openai/v1/chat/completions"; 
+        const OPENSOURCE_API_KEY = "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"; // Apni Free Groq API Key Yahan Dalein
+        const AI_MODEL_NAME = "gemma2-9b-it"; // Fast Open Source Model
+
+        function toggleAiChat() {
+            document.getElementById("aiChatWindow").classList.toggle("hidden");
+        }
+
+        async function sendAiMessage() {
+            const inputField = document.getElementById("aiUserInput");
+            const messageContainer = document.getElementById("aiMessages");
+            const userText = inputField.value.trim();
+
+            if (!userText) return;
+
+            // 1. User UI Display
+            messageContainer.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="bg-cyan-600 text-white p-3 rounded-2xl max-w-[85%] shadow-md">
+                        ${escapeHtml(userText)}
+                    </div>
+                </div>
+            `;
+            inputField.value = "";
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+
+            // 2. Loading UI
+            const loadingId = "loading_" + Date.now();
+            messageContainer.innerHTML += `
+                <div id="${loadingId}" class="flex justify-start">
+                    <div class="bg-slate-800 text-cyan-400 p-3 rounded-2xl italic flex items-center gap-2">
+                        <i class="fa-solid fa-spinner animate-spin"></i> Haxoon AI is thinking...
+                    </div>
+                </div>
+            `;
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+
+            // 3. System Context (Catalog Feeded to AI)
+            const catalogContext = products.map(p => `${p.name} ($${p.price}) - Specs: ${p.specs}`).join("\n");
+            const systemInstruction = `Aap Haxoon store ke AI expert hain. Haxoon store par yeh products available hain:\n${catalogContext}\n\nAap Roman Urdu/Hindi mein friendly aur short jawab dein. Sirf store ke laptops, smartphones aur unki specs ke baare mein baat karein.`;
+
+            try {
+                const response = await fetch(OPENSOURCE_API_URL, {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENSOURCE_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: AI_MODEL_NAME,
+                        messages: [
+                            { role: "system", content: systemInstruction },
+                            { role: "user", content: userText }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+
+                const data = await response.json();
+                const loader = document.getElementById(loadingId);
+                if (loader) loader.remove();
+
+                if (data.choices && data.choices[0]) {
+                    const aiReply = data.choices[0].message.content;
+                    messageContainer.innerHTML += `
+                        <div class="flex justify-start">
+                            <div class="bg-slate-800 text-slate-200 p-3 rounded-2xl max-w-[85%] leading-relaxed shadow-md">
+                                ${escapeHtml(aiReply)}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.error?.message || "Invalid API response");
+                }
+            } catch (error) {
+                const loader = document.getElementById(loadingId);
+                if (loader) loader.remove();
+                
+                messageContainer.innerHTML += `
+                    <div class="flex justify-start">
+                        <div class="bg-red-950/90 text-red-300 border border-red-500/50 p-3 rounded-2xl max-w-[85%]">
+                            ⚠️ API Key missing ya invalid hai. Kripya JavaScript mein 'OPENSOURCE_API_KEY' set karein.
+                        </div>
+                    </div>
+                `;
+            }
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>
